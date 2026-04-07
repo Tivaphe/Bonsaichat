@@ -1,0 +1,93 @@
+/* Bonsai Chat Theme */
+:root {
+    --bonsai-dark-green: #1a2e1a;
+    --bonsai-jade: #2d5a27;
+    --bonsai-beige: #f5f0e8;
+    --bonsai-gold: #c8a84b;
+    --bonsai-text-dark: #2c3e2d;
+    --bonsai-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --bonsai-font-mono: 'Fira Code', 'Roboto Mono', 'Source Code Pro', monospace;
+}
+
+body {
+    background-color: var(--bonsai-beige);
+    color: var(--bonsai-text-dark);
+    font-family: var(--bonsai-font-sans);
+}
+
+.gradio-container {
+    background-color: var(--bonsai-beige) !important;
+}
+
+/* Sidebar styling */
+.sidebar {
+    background-color: #e9e4d8 !important;
+    border-right: 1px solid #dcd7c9 !important;
+}
+
+/* Chat bubble styling */
+.user-msg {
+    background-color: var(--bonsai-jade) !important;
+    color: white !important;
+    border-radius: 15px 15px 0 15px !important;
+}
+
+.bot-msg {
+    background-color: white !important;
+    border: 1px solid var(--bonsai-jade) !important;
+    border-radius: 15px 15px 15px 0 !important;
+    font-family: var(--bonsai-font-mono) !important;
+}
+
+/* Button styling */
+.gr-button-primary {
+    background: var(--bonsai-jade) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.gr-button-primary:hover {
+    background: var(--bonsai-dark-green) !important;
+}
+
+.gr-button-secondary {
+    background: transparent !important;
+    color: var(--bonsai-jade) !important;
+    border: 1px solid var(--bonsai-jade) !important;
+}
+
+/* Header/Logo area */
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bonsai-dark-green);
+    color: var(--bonsai-beige);
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+.header-logo {
+    height: 48px;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.1rem;
+}
+
+/* Inputs and Sliders */
+.gr-input, .gr-slider {
+    border-color: #dcd7c9 !important;
+}
+
+.gr-slider input {
+    accent-color: var(--bonsai-gold) !important;
+}
+
+/* Markdown responses in chat */
+.prose {
+    font-family: var(--bonsai-font-mono) !important;
+}

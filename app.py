@@ -25,7 +25,9 @@ def load_session_history():
 
 def save_session(session_id, messages, title=None):
     if not title and messages:
-        title = messages[0]["content"][:30] + "..."
+        # messages is list of dicts
+        first_msg = messages[0]["content"]
+        title = first_msg[:30] + "..."
     elif not title:
         title = "New Conversation"
 
@@ -146,7 +148,9 @@ with gr.Blocks(title="Bonsai Chat") as demo:
         # Sidebar
         with gr.Column(scale=1, variant="panel", elem_classes=["sidebar"]):
             gr.Markdown("### Conversations")
-            history_dropdown = gr.Dropdown(label="History", choices=load_session_history(), interactive=True)
+            with gr.Row():
+                history_dropdown = gr.Dropdown(label="History", choices=load_session_history(), interactive=True, scale=4)
+                refresh_btn = gr.Button("🔄", scale=1)
             rename_input = gr.Textbox(label="Rename Session", placeholder="New title...")
             rename_btn = gr.Button("✏️ Rename", variant="secondary")
             new_chat_btn = gr.Button("🌿 New Chat", variant="primary")
@@ -183,7 +187,12 @@ with gr.Blocks(title="Bonsai Chat") as demo:
     download_btn.click(handle_model_download, [model_select], [status_msg, model_select])
     new_chat_btn.click(start_new_chat, None, [chatbot, session_id])
 
-    history_dropdown.change(load_session, [history_dropdown], [chatbot, session_id])
+    def on_history_change(sid):
+        messages, new_sid = load_session(sid)
+        return messages, new_sid
+
+    history_dropdown.change(on_history_change, [history_dropdown], [chatbot, session_id])
+    refresh_btn.click(lambda: gr.update(choices=load_session_history()), None, [history_dropdown])
     delete_chat_btn.click(delete_session, [session_id], [history_dropdown]).then(start_new_chat, None, [chatbot, session_id])
     rename_btn.click(rename_session, [session_id, rename_input], [history_dropdown])
 

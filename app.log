@@ -1,0 +1,2 @@
+/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/gradio/helpers.py:1164: UserWarning: Watermarking for SVG images is currently not supported. No watermark will be applied.
+  warnings.warn(message)

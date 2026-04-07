@@ -4,14 +4,26 @@ set -e
 
 echo "=== Installing Bonsai Chat ==="
 
+# Create virtual environment if it doesn't exist
+if [ ! -d ".venv" ]; then
+    python3 -m venv .venv
+fi
+source .venv/bin/activate
+
 # 1. Detect Hardware and install llama-cpp-python
 # As per memory, we use precompiled wheels to avoid build issues.
 if command -v nvidia-smi >/dev/null 2>&1; then
     echo "NVIDIA GPU detected. Installing llama-cpp-python with CUDA support..."
-    pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/cu121 --extra-index-url https://pypi.org/simple
+    pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/cu121 --extra-index-url https://pypi.org/simple || {
+        echo "CUDA wheel failed, falling back to CPU..."
+        pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/cpu --extra-index-url https://pypi.org/simple
+    }
 elif command -v vulkaninfo >/dev/null 2>&1; then
     echo "Vulkan detected. Installing llama-cpp-python with Vulkan support..."
-    pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan --extra-index-url https://pypi.org/simple
+    pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan --extra-index-url https://pypi.org/simple || {
+        echo "Vulkan wheel failed, falling back to CPU..."
+        pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/cpu --extra-index-url https://pypi.org/simple
+    }
 else
     echo "No specialized hardware detected. Installing CPU-only llama-cpp-python..."
     pip install llama-cpp-python --only-binary llama-cpp-python --index-url https://abetlen.github.io/llama-cpp-python/whl/cpu --extra-index-url https://pypi.org/simple
